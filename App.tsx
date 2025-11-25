@@ -1,20 +1,20 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+﻿import React from "react";
+import { StatusBar } from "expo-status-bar";
+import { Provider } from "react-redux";
+import { store } from "./src/store";
+import AppNavigator from "./src/navigation/AppNavigator";
+import { ThemeProvider } from "./src/styles/ThemeContext";
+import ErrorBoundary from "./src/components/common/ErrorBoundary";
 
 export default function App() {
   return (
-    <View style={styles.container}>
-      <Text>Open up App.tsx to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <ErrorBoundary>
+      <Provider store={store}>
+        <ThemeProvider>
+          <AppNavigator />
+          <StatusBar style="auto" />
+        </ThemeProvider>
+      </Provider>
+    </ErrorBoundary>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
