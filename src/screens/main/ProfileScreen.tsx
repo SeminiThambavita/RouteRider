@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useTheme } from "../../styles/ThemeContext";
 import { logout } from "../../store/slices/authSlice";
 import { RootState } from "../../store";
+import { Feather } from "@expo/vector-icons";
 
 const ProfileScreen: React.FC = () => {
   const dispatch = useDispatch();
@@ -23,9 +24,7 @@ const ProfileScreen: React.FC = () => {
 
       <View style={styles.userInfo}>
         <View style={styles.avatar}>
-          <Text style={styles.avatarText}>
-            {user?.firstName?.[0]}{user?.lastName?.[0]}
-          </Text>
+          <Feather name="user" size={32} color="white" />
         </View>
         <Text style={[styles.userName, theme === "dark" && styles.textDark]}>
           {user?.firstName} {user?.lastName}
@@ -40,6 +39,7 @@ const ProfileScreen: React.FC = () => {
 
       <View style={styles.stats}>
         <View style={styles.statItem}>
+          <Feather name="star" size={24} color={theme === "dark" ? "#fff" : "#007AFF"} />
           <Text style={[styles.statNumber, theme === "dark" && styles.textDark]}>
             {favorites.length}
           </Text>
@@ -54,13 +54,19 @@ const ProfileScreen: React.FC = () => {
           style={[styles.themeButton, theme === "dark" && styles.themeButtonDark]}
           onPress={toggleTheme}
         >
+          {theme === "dark" ? (
+            <Feather name="sun" size={20} color="#666" />
+          ) : (
+            <Feather name="moon" size={20} color="#666" />
+          )}
           <Text style={styles.themeButtonText}>
-            {theme === "dark" ? "☀️ Light Mode" : "🌙 Dark Mode"}
+            {theme === "dark" ? " Light Mode" : " Dark Mode"}
           </Text>
         </TouchableOpacity>
 
         <TouchableOpacity style={styles.logoutButton} onPress={handleLogout}>
-          <Text style={styles.logoutButtonText}>Logout</Text>
+          <Feather name="log-out" size={20} color="white" />
+          <Text style={styles.logoutButtonText}> Logout</Text>
         </TouchableOpacity>
       </View>
     </View>
@@ -97,11 +103,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginBottom: 16,
   },
-  avatarText: {
-    fontSize: 24,
-    fontWeight: "bold",
-    color: "white",
-  },
   userName: {
     fontSize: 22,
     fontWeight: "bold",
@@ -129,6 +130,7 @@ const styles = StyleSheet.create({
   statNumber: {
     fontSize: 24,
     fontWeight: "bold",
+    marginTop: 8,
     color: "#333",
   },
   statLabel: {
@@ -140,12 +142,15 @@ const styles = StyleSheet.create({
     gap: 12,
   },
   themeButton: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
     backgroundColor: "white",
     padding: 16,
     borderRadius: 8,
-    alignItems: "center",
     borderWidth: 1,
     borderColor: "#ddd",
+    gap: 8,
   },
   themeButtonDark: {
     backgroundColor: "#2d2d2d",
@@ -156,10 +161,13 @@ const styles = StyleSheet.create({
     fontWeight: "500",
   },
   logoutButton: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
     backgroundColor: "#FF3B30",
     padding: 16,
     borderRadius: 8,
-    alignItems: "center",
+    gap: 8,
   },
   logoutButtonText: {
     color: "white",

@@ -1,6 +1,7 @@
 ﻿import React, { useState } from "react";
 import { View, TextInput, TouchableOpacity, Text, StyleSheet, Modal } from "react-native";
 import { useTheme } from "../../styles/ThemeContext";
+import { Feather } from "@expo/vector-icons";
 
 interface SearchHeaderProps {
   searchQuery: string;
@@ -39,6 +40,7 @@ const SearchHeader: React.FC<SearchHeaderProps> = ({
     <View style={[styles.container, theme === "dark" && styles.containerDark]}>
       {/* Search Bar */}
       <View style={[styles.searchBar, theme === "dark" && styles.searchBarDark]}>
+        <Feather name="search" size={20} color={theme === "dark" ? "#888" : "#999"} style={styles.searchIcon} />
         <TextInput
           style={[styles.searchInput, theme === "dark" && styles.textDark]}
           placeholder="Search routes, destinations..."
@@ -50,7 +52,7 @@ const SearchHeader: React.FC<SearchHeaderProps> = ({
           style={styles.filterButton}
           onPress={() => setShowFilters(true)}
         >
-          <Text style={styles.filterIcon}>🔍</Text>
+          <Feather name="filter" size={20} color={theme === "dark" ? "#fff" : "#666"} />
           {activeFiltersCount > 0 && (
             <View style={styles.filterBadge}>
               <Text style={styles.filterBadgeText}>{activeFiltersCount}</Text>
@@ -87,6 +89,9 @@ const SearchHeader: React.FC<SearchHeaderProps> = ({
                     ]}
                     onPress={() => onFiltersChange({ ...filters, transportType: type })}
                   >
+                    {filters.transportType === type && (
+                      <Feather name="check" size={14} color="white" style={styles.checkIcon} />
+                    )}
                     <Text
                       style={[
                         styles.filterOptionText,
@@ -115,6 +120,9 @@ const SearchHeader: React.FC<SearchHeaderProps> = ({
                     ]}
                     onPress={() => onFiltersChange({ ...filters, status: status })}
                   >
+                    {filters.status === status && (
+                      <Feather name="check" size={14} color="white" style={styles.checkIcon} />
+                    )}
                     <Text
                       style={[
                         styles.filterOptionText,
@@ -134,13 +142,15 @@ const SearchHeader: React.FC<SearchHeaderProps> = ({
                 style={[styles.actionButton, styles.clearButton]}
                 onPress={clearFilters}
               >
-                <Text style={styles.clearButtonText}>Clear All</Text>
+                <Feather name="x" size={16} color="#666" />
+                <Text style={styles.clearButtonText}> Clear All</Text>
               </TouchableOpacity>
               <TouchableOpacity 
                 style={[styles.actionButton, styles.applyButton]}
                 onPress={() => setShowFilters(false)}
               >
-                <Text style={styles.applyButtonText}>Apply Filters</Text>
+                <Feather name="check" size={16} color="white" />
+                <Text style={styles.applyButtonText}> Apply Filters</Text>
               </TouchableOpacity>
             </View>
           </View>
@@ -176,6 +186,9 @@ const styles = StyleSheet.create({
   searchBarDark: {
     backgroundColor: "#2d2d2d",
   },
+  searchIcon: {
+    marginRight: 8,
+  },
   searchInput: {
     flex: 1,
     paddingVertical: 12,
@@ -188,9 +201,6 @@ const styles = StyleSheet.create({
   filterButton: {
     padding: 8,
     position: "relative",
-  },
-  filterIcon: {
-    fontSize: 20,
   },
   filterBadge: {
     position: "absolute",
@@ -245,16 +255,22 @@ const styles = StyleSheet.create({
     gap: 8,
   },
   filterOption: {
+    flexDirection: "row",
+    alignItems: "center",
     paddingHorizontal: 16,
     paddingVertical: 8,
     borderRadius: 20,
     backgroundColor: "#f0f0f0",
     borderWidth: 1,
     borderColor: "#ddd",
+    gap: 6,
   },
   filterOptionActive: {
     backgroundColor: "#007AFF",
     borderColor: "#007AFF",
+  },
+  checkIcon: {
+    marginRight: 2,
   },
   filterOptionText: {
     fontSize: 14,
@@ -271,9 +287,12 @@ const styles = StyleSheet.create({
   },
   actionButton: {
     flex: 1,
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
     paddingVertical: 12,
     borderRadius: 8,
-    alignItems: "center",
+    gap: 6,
   },
   clearButton: {
     backgroundColor: "transparent",

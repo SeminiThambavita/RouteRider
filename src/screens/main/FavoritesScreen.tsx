@@ -5,16 +5,25 @@ import { useNavigation } from "@react-navigation/native";
 import { useTheme } from "../../styles/ThemeContext";
 import { RootState } from "../../store";
 import { TransportItem } from "../../types";
+import { Feather } from "@expo/vector-icons";
+import { StackNavigationProp } from "@react-navigation/stack";
+
+// Define navigation types
+type RootStackParamList = {
+  Details: { transportItem: TransportItem };
+};
+
+type FavoritesScreenNavigationProp = StackNavigationProp<RootStackParamList, 'Details'>;
 
 const FavoritesScreen: React.FC = () => {
-  const navigation = useNavigation();
+  const navigation = useNavigation<FavoritesScreenNavigationProp>();
   const { theme } = useTheme();
   const { items, favorites } = useSelector((state: RootState) => state.transport);
 
   const favoriteItems = items.filter(item => favorites.includes(item.id));
 
   const handleItemPress = (item: TransportItem) => {
-    navigation.navigate("Details" as never, { transportItem: item });
+    navigation.navigate("Details", { transportItem: item });
   };
 
   const renderFavoriteItem = ({ item }: { item: TransportItem }) => (
@@ -61,6 +70,7 @@ const FavoritesScreen: React.FC = () => {
   if (favoriteItems.length === 0) {
     return (
       <View style={[styles.container, styles.center, theme === "dark" && styles.containerDark]}>
+        <Feather name="heart" size={64} color="#ccc" />
         <Text style={[styles.emptyTitle, theme === "dark" && styles.textDark]}>
           No Favorites Yet
         </Text>

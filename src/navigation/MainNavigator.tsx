@@ -9,7 +9,7 @@ import FavoritesScreen from "../screens/main/FavoritesScreen";
 import DetailsScreen from "../screens/details/DetailsScreen";
 import ProfileScreen from "../screens/main/ProfileScreen";
 import { useTheme } from "../styles/ThemeContext";
-import { Home, Star, User, MapPin, Heart } from "react-feather";
+import { Feather } from "@expo/vector-icons";
 
 const Tab = createBottomTabNavigator();
 const HomeStack = createStackNavigator();
@@ -36,7 +36,8 @@ const HomeStackNavigator: React.FC = () => {
         options={{ 
           title: "RouteRider",
           headerRight: () => (
-            <MapPin 
+            <Feather 
+              name="map-pin"
               size={24} 
               color="#fff" 
               style={{ marginRight: 15 }} 
@@ -74,7 +75,8 @@ const FavoritesStackNavigator: React.FC = () => {
         options={{ 
           title: "My Favorites",
           headerRight: () => (
-            <Heart 
+            <Feather 
+              name="heart"
               size={24} 
               color="#fff" 
               style={{ marginRight: 15 }} 
@@ -107,8 +109,8 @@ const MainNavigator: React.FC = () => {
         component={HomeStackNavigator}
         options={{ 
           title: "Home",
-          tabBarIcon: ({ color, size, focused }) => (
-            <Home size={size} color={color} />
+          tabBarIcon: ({ color, size }) => (
+            <Feather name="home" size={size} color={color} />
           ),
         }}
       />
@@ -117,8 +119,8 @@ const MainNavigator: React.FC = () => {
         component={FavoritesStackNavigator}
         options={{ 
           title: "Favorites",
-          tabBarIcon: ({ color, size, focused }) => (
-            <Star size={size} color={color} />
+          tabBarIcon: ({ color, size }) => (
+            <Feather name="star" size={size} color={color} />
           ),
         }}
       />
@@ -127,8 +129,8 @@ const MainNavigator: React.FC = () => {
         component={ProfileScreen}
         options={{ 
           title: "Profile",
-          tabBarIcon: ({ color, size, focused }) => (
-            <User size={size} color={color} />
+          tabBarIcon: ({ color, size }) => (
+            <Feather name="user" size={size} color={color} />
           ),
         }}
       />

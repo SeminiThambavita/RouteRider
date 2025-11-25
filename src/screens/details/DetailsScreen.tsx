@@ -7,6 +7,7 @@ import { addToFavorites, removeFromFavorites } from "../../store/slices/transpor
 import { RootState } from "../../store";
 import { transportApi } from "../../services/api/transportApi";
 import { TransportItem } from "../../types";
+import { Feather } from "@expo/vector-icons";
 
 const DetailsScreen: React.FC = () => {
   const route = useRoute();
@@ -43,6 +44,15 @@ const DetailsScreen: React.FC = () => {
     }
   };
 
+  const getStatusIcon = (status: string) => {
+    switch (status) {
+      case "On Time": return <Feather name="clock" size={16} color="#155724" />;
+      case "Delayed": return <Feather name="alert-circle" size={16} color="#856404" />;
+      case "Cancelled": return <Feather name="alert-circle" size={16} color="#721c24" />;
+      default: return <Feather name="clock" size={16} color="#155724" />;
+    }
+  };
+
   if (!transportItem) {
     return (
       <View style={[styles.container, styles.center, theme === "dark" && styles.containerDark]}>
@@ -70,26 +80,34 @@ const DetailsScreen: React.FC = () => {
             </Text>
           </View>
           <TouchableOpacity onPress={toggleFavorite} style={styles.favoriteButton}>
-            <Text style={[styles.favoriteIcon, favorites.includes(transportItem.id) && styles.favoriteActive]}>
-              {favorites.includes(transportItem.id) ? "♥" : "♡"}
-            </Text>
+            <Feather 
+              name="heart"
+              size={28} 
+              color={favorites.includes(transportItem.id) ? "#FF3B30" : "#ccc"} 
+            />
           </TouchableOpacity>
         </View>
 
         <View style={styles.detailSection}>
-          <Text style={[styles.destination, theme === "dark" && styles.textDark]}>
-            To: {transportItem.destination}
-          </Text>
+          <View style={styles.destinationRow}>
+            <Feather name="map-pin" size={20} color="#007AFF" />
+            <Text style={[styles.destination, theme === "dark" && styles.textDark]}>
+              To: {transportItem.destination}
+            </Text>
+          </View>
         </View>
 
         <View style={styles.detailRow}>
+          <Feather name="clock" size={18} color={theme === "dark" ? "#fff" : "#666"} />
           <Text style={[styles.label, theme === "dark" && styles.textDark]}>Departure Time:</Text>
           <Text style={[styles.value, theme === "dark" && styles.textDark]}>{transportItem.departureTime}</Text>
         </View>
 
         <View style={styles.detailRow}>
+          <Feather name="navigation" size={18} color={theme === "dark" ? "#fff" : "#666"} />
           <Text style={[styles.label, theme === "dark" && styles.textDark]}>Status:</Text>
           <View style={[styles.status, getStatusStyle(transportItem.status)]}>
+            {getStatusIcon(transportItem.status)}
             <Text style={styles.statusText}>{transportItem.status}</Text>
             {transportItem.delay > 0 && (
               <Text style={styles.delayText}>(+{transportItem.delay}min)</Text>
@@ -99,6 +117,7 @@ const DetailsScreen: React.FC = () => {
 
         {transportItem.platform && (
           <View style={styles.detailRow}>
+            <Feather name="map-pin" size={18} color={theme === "dark" ? "#fff" : "#666"} />
             <Text style={[styles.label, theme === "dark" && styles.textDark]}>Platform:</Text>
             <Text style={[styles.value, theme === "dark" && styles.textDark]}>{transportItem.platform}</Text>
           </View>
@@ -109,8 +128,11 @@ const DetailsScreen: React.FC = () => {
           <Text style={[styles.value, theme === "dark" && styles.textDark]}>{transportItem.type}</Text>
         </View>
 
-        <View style={styles.infoBox}>
-          <Text style={[styles.infoTitle, theme === "dark" && styles.textDark]}>Travel Information</Text>
+        <View style={[styles.infoBox, theme === "dark" && styles.infoBoxDark]}>
+          <View style={styles.infoHeader}>
+            <Feather name="alert-circle" size={18} color={theme === "dark" ? "#fff" : "#007AFF"} />
+            <Text style={[styles.infoTitle, theme === "dark" && styles.textDark]}>Travel Information</Text>
+          </View>
           <Text style={[styles.infoText, theme === "dark" && styles.textDark]}>
             Please arrive at the platform 2-3 minutes before departure time. 
             Keep your ticket ready for inspection.
@@ -164,15 +186,13 @@ const styles = StyleSheet.create({
   favoriteButton: {
     padding: 8,
   },
-  favoriteIcon: {
-    fontSize: 28,
-    color: "#ccc",
-  },
-  favoriteActive: {
-    color: "#FF3B30",
-  },
   detailSection: {
     marginBottom: 20,
+  },
+  destinationRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 8,
   },
   destination: {
     fontSize: 22,
@@ -181,8 +201,8 @@ const styles = StyleSheet.create({
   },
   detailRow: {
     flexDirection: "row",
-    justifyContent: "space-between",
     alignItems: "center",
+    gap: 12,
     marginBottom: 15,
     paddingVertical: 8,
     borderBottomWidth: 1,
@@ -192,6 +212,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: "600",
     color: "#666",
+    flex: 1,
   },
   value: {
     fontSize: 16,
@@ -201,6 +222,7 @@ const styles = StyleSheet.create({
   status: {
     flexDirection: "row",
     alignItems: "center",
+    gap: 6,
     paddingHorizontal: 12,
     paddingVertical: 6,
     borderRadius: 8,
@@ -217,7 +239,6 @@ const styles = StyleSheet.create({
   statusText: {
     fontSize: 14,
     fontWeight: "bold",
-    marginRight: 4,
   },
   delayText: {
     fontSize: 14,
@@ -229,10 +250,18 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     marginTop: 20,
   },
+  infoBoxDark: {
+    backgroundColor: "#2d2d2d",
+  },
+  infoHeader: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 8,
+    marginBottom: 8,
+  },
   infoTitle: {
     fontSize: 16,
     fontWeight: "bold",
-    marginBottom: 8,
     color: "#333",
   },
   infoText: {

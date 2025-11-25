@@ -95,9 +95,6 @@ const LoginScreen: React.FC = () => {
               )}
             </TouchableOpacity>
 
-            <Text style={[styles.demoText, theme === "dark" && styles.textDark]}>
-              Use any username/password (min 3 characters)
-            </Text>
           </View>
         )}
       </Formik>
