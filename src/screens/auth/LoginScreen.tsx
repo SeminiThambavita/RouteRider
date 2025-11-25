@@ -51,7 +51,7 @@ const LoginScreen: React.FC = () => {
       <Text style={[styles.subtitle, theme === "dark" && styles.textDark]}>Sign in to your account</Text>
 
       <Formik
-        initialValues={{ username: "demo", password: "demo123" }}
+        initialValues={{ username: "", password: "" }}
         validationSchema={loginSchema}
         onSubmit={handleLogin}
       >
@@ -95,6 +95,9 @@ const LoginScreen: React.FC = () => {
               )}
             </TouchableOpacity>
 
+            <Text style={[styles.demoText, theme === "dark" && styles.textDark]}>
+              username: emily  password: emilypass (from DummyJSON)
+            </Text>
           </View>
         )}
       </Formik>
